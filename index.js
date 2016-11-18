@@ -5,6 +5,8 @@ var parser = require('body-parser')
 
 var jsonparser = parser.json()
 
+var port = process.env.PORT || 8080
+
 app.get('/', function (req, res) {
   res.send('Team 11!')
 })
@@ -14,6 +16,6 @@ app.post('/cite', jsonparser, function (req, res) {
   console.log(req.body);
 })
 
-app.listen(3000, function () {
+app.listen(port, function () {
   console.log('Running Team 11 site');
 })
