@@ -26,6 +26,7 @@ app.get('/citations/:url', function (req, res) {
 // POST a citation
 app.post('/cite', jsonparser, function (req, res) {
   db.insertCitation(req.body.url, req.body.citeUrl, req.body.text, req.body.supporting)
+  res.end()
 })
 
 app.listen(port, function () {
