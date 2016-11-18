@@ -2,30 +2,21 @@
 
 var app = require('express')()
 var parser = require('body-parser')
+var db = require('./lib/db.js')
 
 var jsonparser = parser.json()
 
 var port = process.env.PORT || 8080
 
-app.get('/citations', function (req, res) {
-  res.setHeader('Content-Type', 'application/json')
-  res.send(JSON.stringify([
-    {
-      "text": "Donald Trump is the greatest person ever to have lived.",
-      "cite-url": "https://en.wikipedia.org/wiki/Donald_Trump",
-      "supporting": false
-    },
-    {
-      "text": "The speed of light is really fast",
-      "cite-url": "https://en.wikipedia.org/wiki/Speed_of_light",
-      "supporting": true
-    }
-  ]))
+app.get('/citations/:url', function (req, res) {
+  db.retrieveCitations(req.params.url).then(function(citations) {
+    res.json(citations)
+  })
 })
 
 // POST a citation
 app.post('/cite', jsonparser, function (req, res) {
-  console.log(req.body);
+  db.insertCitation(req.body.url, req.body.citeUrl, req.body.text, req.body.supporting)
 })
 
 app.listen(port, function () {
